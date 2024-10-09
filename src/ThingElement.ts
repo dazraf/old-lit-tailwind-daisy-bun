@@ -2,6 +2,10 @@ import { html } from "lit";
 import { customElement } from "lit/decorators.js";
 import { TailwindElement } from "./TailwindElement";
 
+/**
+ * A custom element that uses Tailwind CSS styles.
+ * @element x-thing
+ */
 @customElement("x-thing")
 export class ThingElement extends TailwindElement() {
   render() {
