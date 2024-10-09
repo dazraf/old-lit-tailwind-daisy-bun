@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*:not(:defined) {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
