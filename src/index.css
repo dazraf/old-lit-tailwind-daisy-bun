@@ -1,7 +1,7 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /**
  Prevent flasing of unstyled components (FUOC). 
  In this skeleton, we aim to have the integrity of shadow dom to allow us to do slots, as well as isolating any per-component styles.

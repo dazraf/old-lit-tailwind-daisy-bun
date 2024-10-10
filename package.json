@@ -18,6 +18,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "lit": "^3.2.1"
   }
 }
