@@ -51,6 +51,5 @@ export class PeopleList extends AppStyledElement() {
     event.preventDefault();
     this.selection = person;
     this.requestUpdate();
-    console.log("selectPerson", event, person);
   }
 }
