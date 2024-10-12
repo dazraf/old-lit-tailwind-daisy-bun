@@ -1,5 +1,5 @@
 import { CSSResult, LitElement, css, unsafeCSS } from "lit";
-import inlineCss from "./index.css?inline";
+import inlineCss from "../index.css?inline";
 export const appStyle = unsafeCSS(inlineCss);
 
 /**

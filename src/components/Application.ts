@@ -3,7 +3,7 @@ import { AppStyledElement } from "./AppStyledElement";
 import { customElement } from "lit/decorators.js";
 
 @customElement("x-app")
-export class AppElement extends AppStyledElement() {
+export class Application extends AppStyledElement() {
   render() {
     return html`
       <div class="container mx-auto p-8">

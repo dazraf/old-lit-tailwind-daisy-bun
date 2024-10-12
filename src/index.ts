@@ -1,6 +1,5 @@
 // add all your custom elements here
-import "./AppElement";
-import "./ThingElement";
-import "./PeopleElement";
-import "./ThemeElement";
-import "./IconElement";
+import "./components/Application";
+import "./components/PeopleList";
+import "./components/ThemeButton";
+import "./components/Icon";

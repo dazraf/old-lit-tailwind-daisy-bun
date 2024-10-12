@@ -1,11 +1,11 @@
 import { html } from "lit";
-import { PersonRepository, PersonRepositoryInMemory } from "./data/PersonRepository";
+import { PersonRepository, PersonRepositoryInMemory } from "../data/PersonRepository";
 import { AppStyledElement } from "./AppStyledElement";
 import { customElement } from "lit/decorators.js";
-import { Person } from "./data/Person";
+import { Person } from "../data/Person";
 
 @customElement("x-people")
-export class PeopleElement extends AppStyledElement() {
+export class PeopleList extends AppStyledElement() {
   personRepository: PersonRepository;
   selection: Person | null = null;
 

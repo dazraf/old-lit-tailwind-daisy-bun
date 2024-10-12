@@ -39,7 +39,7 @@ const _themes: ThemeDefinitions = {
 };
 
 @customElement("x-theme")
-export class ThemeElement extends AppStyledElement(css``) {
+export class ThemeButton extends AppStyledElement(css``) {
   // -- static methods --
 
   /**
@@ -69,7 +69,7 @@ export class ThemeElement extends AppStyledElement(css``) {
   /**
    * This is used to track the last selected theme. Used for cancelling a selection
    */
-  private selectedTheme: string = ThemeElement.currentTheme;
+  private selectedTheme: string = ThemeButton.currentTheme;
 
   // -- overrides --
 
@@ -84,7 +84,7 @@ export class ThemeElement extends AppStyledElement(css``) {
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.documentTheme = ThemeElement.currentTheme;
+    this.documentTheme = ThemeButton.currentTheme;
     super.firstUpdated(_changedProperties);
   }
 
@@ -98,7 +98,7 @@ export class ThemeElement extends AppStyledElement(css``) {
         tabindex="0"
       >
         <div tabindex="0" role="button" class="m-0 p-0 border-0 border-spacing-y-0 max-h-min max-w-min">
-          ${ThemeElement.isCurrentThemeLight
+          ${ThemeButton.isCurrentThemeLight
             ? html`<x-icon icon="sun" filled></x-icon>`
             : html`<x-icon icon="moon" filled></x-icon>`}
         </div>
@@ -144,7 +144,7 @@ export class ThemeElement extends AppStyledElement(css``) {
   }
 
   private onDropdownFocus() {
-    this.selectedTheme = ThemeElement.currentTheme;
+    this.selectedTheme = ThemeButton.currentTheme;
   }
 
   private onChangeTheme(e: Event) {
@@ -171,12 +171,12 @@ export class ThemeElement extends AppStyledElement(css``) {
   }
 
   private isThemeSelected(theme: ThemeName) {
-    return ThemeElement.currentTheme === theme;
+    return ThemeButton.currentTheme === theme;
   }
 
   private set documentTheme(theme: ThemeName) {
     if (theme === "default") {
-      theme = ThemeElement.defaultTheme;
+      theme = ThemeButton.defaultTheme;
     }
     localStorage.setItem("theme", theme);
     this.shadowRoot?.ownerDocument.documentElement.setAttribute("data-theme", theme);

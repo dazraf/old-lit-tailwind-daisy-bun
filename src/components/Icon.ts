@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { AppStyledElement } from "./AppStyledElement";
 
 @customElement("x-icon")
-export class IconElement extends AppStyledElement() {
+export class Icon extends AppStyledElement() {
   @property({ type: String })
   icon: string = "";
 
