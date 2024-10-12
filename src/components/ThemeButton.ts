@@ -69,7 +69,7 @@ export class ThemeButton extends AppStyledElement(css``) {
   /**
    * This is used to track the last selected theme. Used for cancelling a selection
    */
-  private selectedTheme: string = ThemeButton.currentTheme;
+  private selectedTheme: ThemeName = ThemeButton.currentTheme;
 
   // -- overrides --
 
@@ -120,7 +120,7 @@ export class ThemeButton extends AppStyledElement(css``) {
             class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
             aria-label=${definition.title}
             value=${name}
-            ?checked=${this.isThemeSelected(name)}
+            ?checked=${this.isThemeSelected(name as ThemeName)}
             @change=${this.onChangeTheme}
             @keydown=${this.onKey}
           />

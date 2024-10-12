@@ -38,7 +38,7 @@ export class PeopleList extends AppStyledElement() {
     return html`
       <tr
         class="hover ${this.selection && this.selection.id == person.id ? "bg-base-300" : ""}"
-        @click=${(e) => this.selectPerson(e, person)}
+        @click=${(e: MouseEvent) => this.selectPerson(e, person)}
       >
         <th>${person.id}</th>
         <td>${person.firstName}</td>
