@@ -24,12 +24,12 @@ export class Application extends AppStyledElement() {
             </a>
           </li>
           <li>
-            <x-theme></x-theme>
+            <theme-selector></theme-selector>
           </li>
         </ul>
         <div class="divider"></div>
         <div class="flex">
-          <x-people class="w-1/3 p-4"></x-people>
+          <people-list class="w-1/3 p-4"></people-list>
           <div class="flex-1 p-4 skeleton h-96 w-80"></div>
         </div>
         <div class="divider"></div>

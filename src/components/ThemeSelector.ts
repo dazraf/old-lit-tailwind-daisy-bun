@@ -38,8 +38,8 @@ const _themes: ThemeDefinitions = {
   },
 };
 
-@customElement("x-theme")
-export class ThemeButton extends AppStyledElement(css``) {
+@customElement("theme-selector")
+export class ThemeSelector extends AppStyledElement(css``) {
   // --- static properties ---
   static properties = {
     selectedTheme: { type: Object },
@@ -73,7 +73,7 @@ export class ThemeButton extends AppStyledElement(css``) {
   /**
    * This is used to track the last selected theme. Used for cancelling a selection
    */
-  private _selectedTheme: ThemeName = ThemeButton.currentTheme;
+  private _selectedTheme: ThemeName = ThemeSelector.currentTheme;
 
   private get selectedTheme() {
     return this._selectedTheme;
@@ -103,7 +103,7 @@ export class ThemeButton extends AppStyledElement(css``) {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     console.log("firstUpdated");
-    this.selectedTheme = ThemeButton.currentTheme;
+    this.selectedTheme = ThemeSelector.currentTheme;
     super.firstUpdated(_changedProperties);
   }
 
@@ -117,7 +117,7 @@ export class ThemeButton extends AppStyledElement(css``) {
         tabindex="0"
       >
         <div tabindex="0" role="button" class="m-0 p-0 border-0 border-spacing-y-0 max-h-min max-w-min">
-          ${ThemeButton.isCurrentThemeLight
+          ${ThemeSelector.isCurrentThemeLight
             ? html`<x-icon icon="sun" filled></x-icon>`
             : html`<x-icon icon="moon" filled></x-icon>`}
         </div>
@@ -165,7 +165,7 @@ export class ThemeButton extends AppStyledElement(css``) {
 
   private onDropdownFocus() {
     console.log("onDropdownFocus");
-    this.selectedTheme = ThemeButton.currentTheme;
+    this.selectedTheme = ThemeSelector.currentTheme;
   }
 
   private onTryTheme(e: Event) {
@@ -203,12 +203,12 @@ export class ThemeButton extends AppStyledElement(css``) {
   }
 
   private isThemeSelected(theme: ThemeName) {
-    return ThemeButton.currentTheme === theme;
+    return ThemeSelector.currentTheme === theme;
   }
 
   private set documentTheme(theme: ThemeName) {
     if (theme === "default") {
-      theme = ThemeButton.defaultTheme;
+      theme = ThemeSelector.defaultTheme;
     }
     console.log("documentTheme", theme);
     localStorage.setItem("theme", theme);
