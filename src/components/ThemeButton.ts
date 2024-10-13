@@ -40,6 +40,10 @@ const _themes: ThemeDefinitions = {
 
 @customElement("x-theme")
 export class ThemeButton extends AppStyledElement(css``) {
+  // --- static properties ---
+  static properties = {
+    selectedTheme: { type: Object },
+  };
   // -- static methods --
 
   /**
@@ -69,9 +73,23 @@ export class ThemeButton extends AppStyledElement(css``) {
   /**
    * This is used to track the last selected theme. Used for cancelling a selection
    */
-  private selectedTheme: ThemeName = ThemeButton.currentTheme;
+  private _selectedTheme: ThemeName = ThemeButton.currentTheme;
+
+  private get selectedTheme() {
+    return this._selectedTheme;
+  }
+
+  private set selectedTheme(theme: ThemeName) {
+    this._selectedTheme = theme;
+    this.documentTheme = theme;
+  }
 
   // -- overrides --
+
+  constructor() {
+    super();
+    // this.selectedTheme = ThemeButton.currentTheme;
+  }
 
   override connectedCallback(): void {
     // this is a more robust way of capturing click events on the dropdown
@@ -84,7 +102,8 @@ export class ThemeButton extends AppStyledElement(css``) {
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.documentTheme = ThemeButton.currentTheme;
+    console.log("firstUpdated");
+    this.selectedTheme = ThemeButton.currentTheme;
     super.firstUpdated(_changedProperties);
   }
 
@@ -121,7 +140,8 @@ export class ThemeButton extends AppStyledElement(css``) {
             aria-label=${definition.title}
             value=${name}
             ?checked=${this.isThemeSelected(name as ThemeName)}
-            @change=${this.onChangeTheme}
+            @pointerenter=${this.onTryTheme}
+            @click=${this.onChangeTheme}
             @keydown=${this.onKey}
           />
         </li>
@@ -144,13 +164,24 @@ export class ThemeButton extends AppStyledElement(css``) {
   }
 
   private onDropdownFocus() {
+    console.log("onDropdownFocus");
     this.selectedTheme = ThemeButton.currentTheme;
   }
 
-  private onChangeTheme(e: Event) {
+  private onTryTheme(e: Event) {
     const theme = (e.target as HTMLInputElement).value as ThemeName;
+    console.log("onTryTheme", theme);
     this.documentTheme = theme;
     this.requestUpdate();
+  }
+
+  private onChangeTheme(e: Event) {
+    e.preventDefault();
+    const theme = (e.target as HTMLInputElement).value as ThemeName;
+    console.log("onChangeTheme", theme);
+    this.selectedTheme = theme;
+    this.requestUpdate();
+    this.closeDropDown();
   }
 
   // -- private methods --
@@ -166,6 +197,7 @@ export class ThemeButton extends AppStyledElement(css``) {
     const dropdown = this.renderRoot.querySelector(".dropdown") as HTMLElement;
     dropdown.classList.remove("dropdown-open");
     const hiddenFocus = this.renderRoot.querySelector("#focus-here") as HTMLElement;
+
     hiddenFocus.focus();
     hiddenFocus.blur();
   }
@@ -178,6 +210,7 @@ export class ThemeButton extends AppStyledElement(css``) {
     if (theme === "default") {
       theme = ThemeButton.defaultTheme;
     }
+    console.log("documentTheme", theme);
     localStorage.setItem("theme", theme);
     this.shadowRoot?.ownerDocument.documentElement.setAttribute("data-theme", theme);
   }
