@@ -1,13 +1,14 @@
 import { html } from "lit";
 import { PersonRepository, PersonRepositoryInMemory } from "../data/PersonRepository";
 import { AppStyledElement } from "./AppStyledElement";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { Person } from "../data/Person";
 
-@customElement("x-people")
+@customElement("people-list")
 export class PeopleList extends AppStyledElement() {
   personRepository: PersonRepository;
-  selection: Person | null = null;
+
+  @property({ type: Object }) selection: Person | null = null;
 
   constructor() {
     super();
@@ -50,6 +51,5 @@ export class PeopleList extends AppStyledElement() {
   selectPerson(event: Event, person: Person) {
     event.preventDefault();
     this.selection = person;
-    this.requestUpdate();
   }
 }
