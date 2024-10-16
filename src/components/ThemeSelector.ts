@@ -2,7 +2,7 @@ import { customElement } from "lit/decorators.js";
 import { AppStyledElement } from "./AppStyledElement";
 import { html, css, PropertyValues } from "lit";
 
-type ThemeName = "default" | "light" | "dark" | "cupcake" | "night";
+type ThemeName = "default" | "light" | "dark" | "cupcake" | "night" | "cyberpunk" | "dracula";
 
 type ThemeType = "light" | "dark" | undefined;
 
@@ -34,6 +34,14 @@ const _themes: ThemeDefinitions = {
   },
   night: {
     title: "Night",
+    type: "dark",
+  },
+  cyberpunk: {
+    title: "Cyberpunk",
+    type: "dark",
+  },
+  dracula: {
+    title: "Dracula",
     type: "dark",
   },
 };
@@ -102,7 +110,6 @@ export class ThemeSelector extends AppStyledElement(css``) {
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    console.log("firstUpdated");
     this.selectedTheme = ThemeSelector.currentTheme;
     super.firstUpdated(_changedProperties);
   }
@@ -164,13 +171,11 @@ export class ThemeSelector extends AppStyledElement(css``) {
   }
 
   private onDropdownFocus() {
-    console.log("onDropdownFocus");
     this.selectedTheme = ThemeSelector.currentTheme;
   }
 
   private onTryTheme(e: Event) {
     const theme = (e.target as HTMLInputElement).value as ThemeName;
-    console.log("onTryTheme", theme);
     this.documentTheme = theme;
     this.requestUpdate();
   }
@@ -178,7 +183,6 @@ export class ThemeSelector extends AppStyledElement(css``) {
   private onChangeTheme(e: Event) {
     e.preventDefault();
     const theme = (e.target as HTMLInputElement).value as ThemeName;
-    console.log("onChangeTheme", theme);
     this.selectedTheme = theme;
     this.requestUpdate();
     this.closeDropDown();
@@ -210,7 +214,6 @@ export class ThemeSelector extends AppStyledElement(css``) {
     if (theme === "default") {
       theme = ThemeSelector.defaultTheme;
     }
-    console.log("documentTheme", theme);
     localStorage.setItem("theme", theme);
     this.shadowRoot?.ownerDocument.documentElement.setAttribute("data-theme", theme);
   }
