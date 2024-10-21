@@ -3,6 +3,7 @@ import { createContext } from "@lit/context";
 
 export interface PersonRepository {
   getPeople(): Person[];
+  getPerson(id: string): Person | undefined;
 }
 
 // temporary in-memory implementation
@@ -49,6 +50,9 @@ export class PersonRepositoryInMemory implements PersonRepository {
 
   getPeople(): Person[] {
     return this.people;
+  }
+  getPerson(id: string): Person | undefined {
+    return this.people.find((p) => p.id === id);
   }
 }
 
