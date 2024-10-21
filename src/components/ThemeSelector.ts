@@ -117,18 +117,19 @@ export class ThemeSelector extends AppStyledElement(css``) {
   protected render() {
     return html`
       <div
-        class="dropdown h-max w-max p-0 m-0"
+        class="dropdown dropdown-end h-max w-max p-0 m-0"
         @focusout=${this.closeDropDown}
+        @click=${this.onDropdownFocus}
         @focusin=${this.onDropdownFocus}
         @keydown=${this.onKey}
         tabindex="0"
       >
         <div tabindex="0" role="button" class="m-0 p-0 border-0 border-spacing-y-0 max-h-min max-w-min">
           ${ThemeSelector.isCurrentThemeLight
-            ? html`<x-icon icon="sun" filled></x-icon>`
-            : html`<x-icon icon="moon" filled></x-icon>`}
+            ? html`<b-icon icon="sun" filled></b-icon>`
+            : html`<b-icon icon="moon" filled></b-icon>`}
         </div>
-        <ul tabindex="0" class="dropdown-content bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
+        <ul tabindex="0" class="dropdown-content bg-base-200 rounded-box z-[1] w-52 p-2 shadow-md">
           ${this.renderThemes()}
         </ul>
       </div>
@@ -170,22 +171,28 @@ export class ThemeSelector extends AppStyledElement(css``) {
     }
   }
 
-  private onDropdownFocus() {
+  private onDropdownFocus(e: Event) {
+    console.log("focus", e);
+    e.preventDefault();
     this.selectedTheme = ThemeSelector.currentTheme;
+    this.openDropDown();
   }
 
   private onTryTheme(e: Event) {
+    console.log("try theme", e);
+    e.preventDefault();
     const theme = (e.target as HTMLInputElement).value as ThemeName;
     this.documentTheme = theme;
     this.requestUpdate();
   }
 
   private onChangeTheme(e: Event) {
+    console.log("change theme", e);
     e.preventDefault();
     const theme = (e.target as HTMLInputElement).value as ThemeName;
     this.selectedTheme = theme;
-    this.requestUpdate();
     this.closeDropDown();
+    this.requestUpdate();
   }
 
   // -- private methods --
@@ -198,12 +205,14 @@ export class ThemeSelector extends AppStyledElement(css``) {
   }
 
   private closeDropDown() {
+    console.log("closing");
     const dropdown = this.renderRoot.querySelector(".dropdown") as HTMLElement;
     dropdown.classList.remove("dropdown-open");
     const hiddenFocus = this.renderRoot.querySelector("#focus-here") as HTMLElement;
-
-    hiddenFocus.focus();
-    hiddenFocus.blur();
+    window.setTimeout(() => {
+      hiddenFocus.focus();
+      hiddenFocus.blur();
+    }, 1);
   }
 
   private isThemeSelected(theme: ThemeName) {
