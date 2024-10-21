@@ -2,7 +2,7 @@ import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { AppStyledElement } from "./AppStyledElement";
 
-@customElement("x-icon")
+@customElement("b-icon")
 export class Icon extends AppStyledElement() {
   @property({ type: String })
   icon: string = "";
