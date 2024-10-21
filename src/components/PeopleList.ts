@@ -7,7 +7,11 @@ import { consume } from "@lit/context";
 import { map } from "lit/directives/map.js";
 
 @customElement("people-list")
-export class PeopleList extends AppStyledElement(css``) {
+export class PeopleList extends AppStyledElement(css`
+  :host {
+    width: 100%;
+  }
+`) {
   @property({ type: Object, attribute: false })
   selection: Person | null = null;
 
@@ -15,22 +19,29 @@ export class PeopleList extends AppStyledElement(css``) {
   private personRepository?: PersonRepository;
 
   protected render() {
-    return html` ${map(this.personRepository?.getPeople() || [], (person) => this.renderPersonItem(person))} `;
+    return html`
+      <div class="flex flex-wrap w-full ">
+        ${map(this.personRepository?.getPeople() || [], (person) => this.renderPersonItem(person))}
+      </div>
+    `;
   }
 
   private renderPersonItem(person: Person) {
-    let bg = "bg-base-200";
-    let text = "text-base-content";
+    let bgColor = "bg-base-200";
+    let textColor = "text-base-content";
+    let divider = "";
+
     if (this.selection && this.selection.id == person.id) {
-      bg = "bg-accent";
-      text = "text-accent-content";
+      bgColor = "bg-accent";
+      textColor = "text-accent-content";
+      divider = "divider-content-accent";
     }
     return html`
       <div
-        class="card ${bg} ${text} w-95 m-4 min-h-50 p-4 border border-base-300 shadow-xl"
-        @click=${(e) => this.selectPerson(e, person)}
+        class="card ${bgColor} ${textColor} max-w-72 min-w-72 m-4 min-h-50 p-4 border border-base-300 shadow-xl"
+        @click=${(e: Event) => this.selectPerson(e, person)}
       >
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 cursor-pointer">
           <div class="flex flex-row gap-4 items-center">
             <div class="avatar">
               <div class="w-12 rounded-full">
@@ -40,26 +51,27 @@ export class PeopleList extends AppStyledElement(css``) {
             <h2 class="font-semibold">${person.firstName} ${person.lastName}</h2>
           </div>
           <div>
-            <hr />
-            <table class="font-mono text-sm m-2">
+            <table class="font-sans text-sm m-2">
+              <thead>
+                <tr>
+                  <th class="w-6 text-left"></th>
+                  <th class="text-left"></th>
+                </tr>
+              </thead>
               <tr>
-                <td>#</td>
-                <td>${person.id}</td>
-              </tr>
-              <tr>
-                <td>b:</td>
+                <td><b-icon icon="calendar3-event"></b-icon></td>
                 <td>${this.getDoB(person)}</td>
               </tr>
               <tr>
-                <td>e:</td>
+                <td><b-icon icon="envelope-at"></b-icon></td>
                 <td>${person.email}</td>
               </tr>
               <tr>
-                <td>m:</td>
+                <td><b-icon icon="phone"></b-icon></td>
                 <td>${person.mobile}</td>
               </tr>
               <tr>
-                <td>a:</td>
+                <td><b-icon icon="geo-alt"></b-icon></td>
                 <td>${person.address}</td>
               </tr>
             </table>

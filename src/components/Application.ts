@@ -30,7 +30,7 @@ export class Application extends AppStyledElement() {
       path: "/people",
       name: "People",
       render: () => html`
-        <div class="container mx-auto m-8 p-8 ">
+        <div class="container mx-auto m-0 p-2 ">
           <div class="flex flex-row">
             <people-list class="min-w-fit" @changed=${this.onPersonSelected}></people-list>
           </div>
