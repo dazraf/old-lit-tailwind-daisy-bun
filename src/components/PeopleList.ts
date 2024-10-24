@@ -5,99 +5,67 @@ import { customElement, property } from "lit/decorators.js";
 import { Person } from "../data/Person";
 import { consume } from "@lit/context";
 import { map } from "lit/directives/map.js";
+import { animate } from "@lit-labs/motion";
+import "./PersonCard";
+import "./Icon";
 
 @customElement("people-list")
 export class PeopleList extends AppStyledElement(css`
   :host {
     width: 100%;
   }
+  person-card {
+    transition: 500ms ease-in-out;
+  }
 `) {
   @property({ type: Object, attribute: false })
-  selection: Person | null = null;
+  selection: Person | undefined = undefined;
 
   @consume({ context: personRepositoryContext })
   private personRepository?: PersonRepository;
 
   protected render() {
-    return html`
-      <div class="flex flex-wrap w-full ">
-        ${map(this.personRepository?.getPeople() || [], (person) => this.renderPersonItem(person))}
-      </div>
-    `;
+    return html` ${this.renderPeopleOrSelection()} `;
+  }
+
+  private renderPeopleOrSelection() {
+    return html`<div class="flex flex-row flex-wrap overflow-y-hidden">
+      ${map(this.personRepository?.getPeople() || [], (person) => this.renderPersonItem(person))}
+    </div>`;
   }
 
   private renderPersonItem(person: Person) {
-    let bgColor = "bg-base-200";
-    let textColor = "text-base-content";
-    let divider = "";
+    let width = this.selection && this.selection.id === person.id ? "w-full" : "w-96";
 
-    if (this.selection && this.selection.id == person.id) {
-      bgColor = "bg-accent";
-      textColor = "text-accent-content";
-      divider = "divider-content-accent";
+    if (!this.selection || (this.selection && this.selection.id === person.id)) {
+      return html`
+        <person-card
+          class="${width} inline-block"
+          id=${"person-" + person.id}
+          .person=${person}
+          ${animate({
+            properties: ["left", "top", "display", "opacity", "display", "padding", "margin"],
+            keyframeOptions: {
+              duration: 500,
+              easing: "ease-in-out",
+            },
+            in: [{ opacity: 0 }, { opacity: 1 }],
+            out: [{ opacity: 1 }, { opacity: 0 }],
+          })}
+          @click=${(e: Event) => this.selectPerson(e, person)}
+        ></person-card>
+      `;
     }
-    return html`
-      <div
-        class="card ${bgColor} ${textColor} max-w-72 min-w-72 m-4 min-h-50 p-4 border border-base-300 shadow-xl"
-        @click=${(e: Event) => this.selectPerson(e, person)}
-      >
-        <div class="flex flex-col gap-4 cursor-pointer">
-          <div class="flex flex-row gap-4 items-center">
-            <div class="avatar">
-              <div class="w-12 rounded-full">
-                <img src="https://i.pravatar.cc/300/?u=${person.email}" />
-              </div>
-            </div>
-            <h2 class="font-semibold">${person.firstName} ${person.lastName}</h2>
-          </div>
-          <div>
-            <table class="font-sans text-sm m-2">
-              <thead>
-                <tr>
-                  <th class="w-6 text-left"></th>
-                  <th class="text-left"></th>
-                </tr>
-              </thead>
-              <tr>
-                <td><b-icon icon="calendar3-event"></b-icon></td>
-                <td>${this.getDoB(person)}</td>
-              </tr>
-              <tr>
-                <td><b-icon icon="envelope-at"></b-icon></td>
-                <td>${person.email}</td>
-              </tr>
-              <tr>
-                <td><b-icon icon="phone"></b-icon></td>
-                <td>${person.mobile}</td>
-              </tr>
-              <tr>
-                <td><b-icon icon="geo-alt"></b-icon></td>
-                <td>${person.address}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  getDoB(person: Person) {
-    return person.dateOfBirth.toLocaleString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
   }
 
   selectPerson(event: Event, person: Person) {
     event.preventDefault();
-    if (this.selection === person) {
-      this.selection = null;
+    if (this.selection && this.selection.id == person.id) {
+      this.selection = undefined;
     } else {
       this.selection = person;
     }
-    this.dispatchEvent(
-      new CustomEvent("changed", { bubbles: true, composed: true, detail: { person: this.selection } })
-    );
+    this.requestUpdate();
+    // this.dispatchEvent(new CustomEvent("changed", { bubbles: true, composed: true, detail: { person: person } }));
   }
 }

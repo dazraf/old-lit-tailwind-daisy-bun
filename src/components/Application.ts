@@ -1,11 +1,16 @@
 import { html } from "lit";
 import { AppStyledElement } from "./AppStyledElement";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { Person } from "../data/Person";
 import { provide } from "@lit/context";
 import { personRepositoryContext, PersonRepositoryInMemory } from "../data/PersonRepository";
 import { Router } from "@lit-labs/router";
 import { PathRouteConfigWithBreadcrumb } from "./Breadcrumbs";
+import "./Icon";
+import "./PeopleList";
+import "./ThemeSelector";
+import "./Breadcrumbs";
+import "./AnimationTest";
 
 @customElement("x-app")
 export class Application extends AppStyledElement() {
@@ -20,8 +25,9 @@ export class Application extends AppStyledElement() {
       path: "/",
       name: "Home",
       render: () => html`
-        <div class="container mx-auto ">
-          <h1 class="">Hello Root</h1>
+        <div class="container mx-auto  m-0 p-2">
+          <span class="prose"><h1 class="text-base-content">Hello Root</h1></span>
+          <animation-test></animation-test>
         </div>
       `,
       breadcrumbs: ["Home"],
@@ -31,8 +37,10 @@ export class Application extends AppStyledElement() {
       name: "People",
       render: () => html`
         <div class="container mx-auto m-0 p-2 ">
+          <input type="text" class="input input-bordered w-full" placeholder="Search people" />
+
           <div class="flex flex-row">
-            <people-list class="min-w-fit" @changed=${this.onPersonSelected}></people-list>
+            <people-list id="people" class="min-w-fit"></people-list>
           </div>
           <div class="divider"></div>
         </div>
@@ -48,13 +56,11 @@ export class Application extends AppStyledElement() {
           return html`<h1>Person not found</h1>`;
         }
         return html`
-          <div class="container mx-auto m-8 p-8 ">
-            <div class="container mx-auto m-8 p-8 ">
-              <div class="flex flex-row">
-                <person-editor class="min-w-fit" .person=${person}></person-editor>
-              </div>
-              <div class="divider"></div>
+          <div class="container mx-auto m-0 p-2 ">
+            <div class="flex flex-row">
+              <people-list id="people" class="min-w-fit"></people-list>
             </div>
+            <div class="divider"></div>
           </div>
         `;
       },
