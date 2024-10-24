@@ -50,7 +50,6 @@ export class Application extends AppStyledElement() {
           <div class="flex flex-row">
             <people-list id="people" class="min-w-fit"></people-list>
           </div>
-          <div class="divider"></div>
         </div>
       `,
       breadcrumbs: ["Home", "People"],

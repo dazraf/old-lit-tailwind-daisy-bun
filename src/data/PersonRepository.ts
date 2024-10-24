@@ -10,15 +10,17 @@ export interface PersonRepository {
 }
 
 // temporary in-memory implementation
-const randomPeople = generateRandomPeople(20);
+const randomPeople = generateRandomPeople(100);
 
 export class PersonRepositoryInMemory implements PersonRepository {
   private people: Person[] = randomPeople;
 
   private fuse = new Fuse(this.people, {
-    ignoreLocation: true,
+    // ignoreLocation: true,
+    location: 0,
     threshold: 0.0,
     distance: 1000,
+    shouldSort: true,
     keys: ["firstName", "lastName"],
   });
 

@@ -61,7 +61,7 @@ export class PeopleList extends AppStyledElement(css`
   }
 
   private renderPersonItem(person: Person) {
-    let width = this.selection && this.selection.id === person.id ? "w-full" : "w-96";
+    let width = this.selection && this.selection.id === person.id ? "w-full" : "w-80";
 
     if (!this.selection || (this.selection && this.selection.id === person.id)) {
       return html`
