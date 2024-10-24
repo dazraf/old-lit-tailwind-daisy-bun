@@ -1,7 +1,7 @@
 import { html, css } from "lit";
 import { PersonRepository, personRepositoryContext, PersonRepositoryInMemory } from "../data/PersonRepository";
 import { AppStyledElement } from "./AppStyledElement";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { Person } from "../data/Person";
 import { consume } from "@lit/context";
 import { map } from "lit/directives/map.js";
@@ -24,13 +24,39 @@ export class PeopleList extends AppStyledElement(css`
   @consume({ context: personRepositoryContext })
   private personRepository?: PersonRepository;
 
+  @state()
+  private searchQuery = "";
+
+  @query("input")
+  private inputElement!: HTMLInputElement;
+
   protected render() {
-    return html` ${this.renderPeopleOrSelection()} `;
+    return html`
+      <label class="input input-bordered flex items-center gap-2 w-96">
+        <input
+          type="text"
+          class="grow"
+          placeholder="Search people"
+          value=${this.searchQuery}
+          @input=${this.searchUpdated}
+        />
+        <button class="${this.searchQuery == "" ? "hidden" : ""}" @click=${this.clearSearch}>
+          <b-icon icon="x"></b-icon>
+        </button>
+      </label>
+
+      ${this.renderPeopleOrSelection()}
+    `;
   }
 
   private renderPeopleOrSelection() {
-    return html`<div class="flex flex-row flex-wrap overflow-y-hidden">
-      ${map(this.personRepository?.getPeople() || [], (person) => this.renderPersonItem(person))}
+    const people =
+      this.searchQuery === ""
+        ? this.personRepository!.getPeople()
+        : this.personRepository!.fuzzySearch(this.searchQuery);
+
+    return html`<div class="flex flex-row flex-wrap overflow-y-hidden gap-4 my-4">
+      ${map(people || [], (person) => this.renderPersonItem(person))}
     </div>`;
   }
 
@@ -67,5 +93,14 @@ export class PeopleList extends AppStyledElement(css`
     }
     this.requestUpdate();
     // this.dispatchEvent(new CustomEvent("changed", { bubbles: true, composed: true, detail: { person: person } }));
+  }
+
+  searchUpdated(event: Event) {
+    this.searchQuery = this.inputElement.value.trim();
+    this.requestUpdate();
+  }
+  clearSearch(event: Event) {
+    this.inputElement.value = "";
+    this.searchQuery = "";
   }
 }

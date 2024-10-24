@@ -25,9 +25,19 @@ export class Application extends AppStyledElement() {
       path: "/",
       name: "Home",
       render: () => html`
-        <div class="container mx-auto  m-0 p-2">
-          <span class="prose"><h1 class="text-base-content">Hello Root</h1></span>
-          <animation-test></animation-test>
+        <div class="container mx-auto">
+          <div class="hero bg-base-200 min-h-full ">
+            <div class="hero-content text-center">
+              <div class="max-w-md">
+                <h1 class="text-5xl font-bold">Hello there</h1>
+                <p class="py-6">
+                  Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In
+                  deleniti eaque aut repudiandae et a id nisi.
+                </p>
+                <button class="btn btn-primary">Get Started</button>
+              </div>
+            </div>
+          </div>
         </div>
       `,
       breadcrumbs: ["Home"],
@@ -36,9 +46,7 @@ export class Application extends AppStyledElement() {
       path: "/people",
       name: "People",
       render: () => html`
-        <div class="container mx-auto m-0 p-2 ">
-          <input type="text" class="input input-bordered w-full" placeholder="Search people" />
-
+        <div class="w-10/12 mx-auto p-2 ">
           <div class="flex flex-row">
             <people-list id="people" class="min-w-fit"></people-list>
           </div>

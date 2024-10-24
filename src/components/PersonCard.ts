@@ -20,7 +20,7 @@ export class PersonCard extends AppStyledElement(css`
     }
     const genderId = this.person.gender == "female" ? "girl" : "boy";
     return html`
-      <div class="card ${bgColor} ${textColor} min-w-72 m-4 min-h-50 p-4 border border-base-300 shadow-xl">
+      <div class="card ${bgColor} ${textColor} min-w-72 m-0 min-h-50 p-4 border border-base-300 shadow-xl">
         <div class="flex flex-col gap-4 cursor-pointer">
           <div class="flex flex-row gap-4 items-center">
             <div class="avatar">
